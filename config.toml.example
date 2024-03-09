@@ -1,0 +1,4 @@
+[site]
+base_url = "https://byr.pt"
+username = "<User Name>"
+password = "<Password>"
