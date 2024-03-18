@@ -2,3 +2,9 @@
 base_url = "https://byr.pt"
 username = "<User Name>"
 password = "<Password>"
+
+[transmission]
+url = "http://localhost:9091/transmission/rpc"
+dir = "/downloads"
+user = "<Transmission User>"
+password = "<Password>"

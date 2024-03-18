@@ -23,7 +23,7 @@ pub trait ToAnyhowError<T> {
 
 impl<T, E> ToAnyhowError<T> for Result<T, E>
 where
-    E: std::error::Error,
+    E: std::fmt::Display + Debug,
 {
     fn anyhow(self) -> Result<T, anyhow::Error> {
         self.map_err(|e| anyhow::anyhow!("{}", e))
@@ -33,4 +33,34 @@ where
 pub fn contain_selector(selector: &str, elem: ElementRef) -> anyhow::Result<bool> {
     let selector = Selector::parse(selector).anyhow()?;
     Ok(elem.select(&selector).next().is_some())
+}
+
+#[derive(Debug)]
+pub struct Size(pub u64);
+
+impl std::fmt::Display for Size {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let Size(size) = self;
+        if *size < 1024 {
+            write!(f, "{} B", size)
+        } else if *size < 1024 * 1024 {
+            write!(f, "{:.2} KiB", *size as f64 / 1024.0)
+        } else if *size < 1024 * 1024 * 1024 {
+            write!(f, "{:.2} MiB", *size as f64 / 1024.0 / 1024.0)
+        } else {
+            write!(f, "{:.2} GiB", *size as f64 / 1024.0 / 1024.0 / 1024.0)
+        }
+    }
+}
+
+impl From<u64> for Size {
+    fn from(size: u64) -> Self {
+        Size(size)
+    }
+}
+
+impl Into<u64> for Size {
+    fn into(self) -> u64 {
+        self.0
+    }
 }

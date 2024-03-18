@@ -14,12 +14,21 @@ static CONFIG: Lazy<Config> = Lazy::new(|| {
 #[derive(Deserialize)]
 pub struct Config {
     pub site: Site,
+    pub transmission: Transmission,
 }
 
 #[derive(Deserialize)]
 pub struct Site {
     pub base_url: String,
     pub username: String,
+    pub password: String,
+}
+
+#[derive(Deserialize)]
+pub struct Transmission {
+    pub url: String,
+    pub dir: String,
+    pub user: String,
     pub password: String,
 }
 
